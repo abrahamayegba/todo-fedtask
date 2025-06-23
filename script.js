@@ -117,6 +117,14 @@ $(document).ready(() => {
     updateStatistics();
   }
 
+  // Handle items per page change
+  function handleItemsPerPageChange() {
+    itemsPerPage = Number.parseInt($("#itemsPerPage").val());
+    currentPage = 1;
+    renderTable();
+    renderPagination();
+  }
+
   // Handle column sorting
   function handleSort(e) {
     const column = $(e.currentTarget).data("column");
@@ -152,6 +160,24 @@ $(document).ready(() => {
       if (aVal > bVal) return currentSort.direction === "asc" ? 1 : -1;
       return 0;
     });
+  }
+
+  // Handle pagination clicks
+  function handlePaginationClick(e) {
+    e.preventDefault();
+    const page = $(e.currentTarget).data("page");
+
+    if (page && page !== currentPage) {
+      currentPage = page;
+      renderTable();
+      renderPagination();
+
+      // Smooth scroll to top of table
+      $(".table-container")[0].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   }
 
   // Highlight search terms in text
@@ -213,6 +239,87 @@ $(document).ready(() => {
             `;
       tbody.append(row);
     });
+  }
+
+  // Render pagination controls
+  function renderPagination() {
+    const totalPages = Math.ceil(filteredTodos.length / itemsPerPage);
+    const pagination = $("#paginationControls");
+    pagination.empty();
+
+    if (totalPages <= 1) {
+      updatePaginationInfo();
+      return;
+    }
+
+    // Previous button
+    const prevDisabled = currentPage === 1 ? "disabled" : "";
+    pagination.append(`
+            <li class="page-item ${prevDisabled}">
+                <a class="page-link" href="#" data-page="${currentPage - 1}">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            </li>
+        `);
+
+    // Page numbers
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    if (startPage > 1) {
+      pagination.append(
+        `<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`
+      );
+      if (startPage > 2) {
+        pagination.append(
+          `<li class="page-item disabled"><span class="page-link">...</span></li>`
+        );
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      const activeClass = i === currentPage ? "active" : "";
+      pagination.append(`
+                <li class="page-item ${activeClass}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>
+            `);
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pagination.append(
+          `<li class="page-item disabled"><span class="page-link">...</span></li>`
+        );
+      }
+      pagination.append(
+        `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a></li>`
+      );
+    }
+
+    // Next button
+    const nextDisabled = currentPage === totalPages ? "disabled" : "";
+    pagination.append(`
+            <li class="page-item ${nextDisabled}">
+                <a class="page-link" href="#" data-page="${currentPage + 1}">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        `);
+
+    updatePaginationInfo();
+  }
+
+  // Update pagination information
+  function updatePaginationInfo() {
+    const startIndex =
+      filteredTodos.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
+    const endIndex = Math.min(currentPage * itemsPerPage, filteredTodos.length);
+    const total = filteredTodos.length;
+
+    $("#paginationInfo").text(
+      `Showing ${startIndex} - ${endIndex} of ${total} entries`
+    );
   }
 
   // Escape special regex characters
