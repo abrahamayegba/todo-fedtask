@@ -51,6 +51,40 @@
           </div>
         </div>
 
+        <!-- Search and Filter Controls -->
+        <div class="search-container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-search"></i
+                ></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchInput"
+                  placeholder="Search todos by title or ID..."
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="statusFilter">
+                <option value="">All Status</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="itemsPerPage">
+                <option value="10">10 per page</option>
+                <option value="25">25 per page</option>
+                <option value="50">50 per page</option>
+                <option value="100">100 per page</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <!-- Loading Spinner -->
         <div class="loading-spinner" id="loadingSpinner">
           <div class="spinner-border text-primary" role="status">
