@@ -92,31 +92,6 @@ $(document).ready(() => {
     updateStatistics();
   }
 
-  // Apply search and filter
-  function applyFilters(searchTerm = "") {
-    const statusFilter = $("#statusFilter").val();
-
-    filteredTodos = allTodos.filter((todo) => {
-      const matchesSearch =
-        searchTerm === "" ||
-        todo.title.toLowerCase().includes(searchTerm) ||
-        todo.id.toString().includes(searchTerm);
-
-      const matchesStatus =
-        statusFilter === "" ||
-        (statusFilter === "completed" && todo.completed) ||
-        (statusFilter === "pending" && !todo.completed);
-
-      return matchesSearch && matchesStatus;
-    });
-
-    currentPage = 1;
-    sortData();
-    renderTable();
-    renderPagination();
-    updateStatistics();
-  }
-
   // Handle items per page change
   function handleItemsPerPageChange() {
     itemsPerPage = Number.parseInt($("#itemsPerPage").val());
@@ -178,14 +153,6 @@ $(document).ready(() => {
         block: "start",
       });
     }
-  }
-
-  // Highlight search terms in text
-  function highlightSearchTerm(text, searchTerm) {
-    if (!searchTerm || searchTerm.trim() === "") return text;
-
-    const regex = new RegExp(`(${escapeRegExp(searchTerm.trim())})`, "gi");
-    return text.replace(regex, "<mark>$1</mark>");
   }
 
   // Render table with current page data
@@ -320,6 +287,49 @@ $(document).ready(() => {
     $("#paginationInfo").text(
       `Showing ${startIndex} - ${endIndex} of ${total} entries`
     );
+  }
+
+  // Update statistics
+  function updateStatistics() {
+    const total = filteredTodos.length;
+    const completed = filteredTodos.filter((todo) => todo.completed).length;
+    const pending = total - completed;
+    const completionRate =
+      total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    // Animate number changes
+    animateNumber("#totalTodos", total);
+    animateNumber("#completedTodos", completed);
+    animateNumber("#pendingTodos", pending);
+    animateNumber("#completionRate", completionRate, "%");
+  }
+
+  // Animate number changes
+  function animateNumber(selector, targetValue, suffix = "") {
+    const element = $(selector);
+    const currentValue = Number.parseInt(element.text()) || 0;
+    const increment = targetValue > currentValue ? 1 : -1;
+    const duration = Math.abs(targetValue - currentValue) * 20;
+
+    if (currentValue === targetValue) return;
+
+    let current = currentValue;
+    const timer = setInterval(() => {
+      current += increment;
+      element.text(current + suffix);
+
+      if (current === targetValue) {
+        clearInterval(timer);
+      }
+    }, duration / Math.abs(targetValue - currentValue));
+  }
+
+  // Highlight search terms in text
+  function highlightSearchTerm(text, searchTerm) {
+    if (!searchTerm || searchTerm.trim() === "") return text;
+
+    const regex = new RegExp(`(${escapeRegExp(searchTerm.trim())})`, "gi");
+    return text.replace(regex, "<mark>$1</mark>");
   }
 
   // Escape special regex characters
