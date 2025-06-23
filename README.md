@@ -31,16 +31,6 @@ A modern, responsive todo application built with Bootstrap, jQuery, and the JSON
 - **Font Awesome**: Professional icons
 - **JSONPlaceholder API**: Mock REST API for todo data
 
-## 📁 Project Structure
-
-\`\`\`
-todo-app/
-├── index.html # Main HTML file
-├── styles.css # Custom CSS styles
-├── script.js # JavaScript functionality
-└── README.md # Project documentation
-\`\`\`
-
 ## 🎨 Design Features
 
 ### Color Scheme
@@ -74,15 +64,6 @@ todo-app/
 
    - Use a local server for best experience:
      \`\`\`bash
-
-   # Using Python
-
-   python -m http.server 8000
-
-   # Using Node.js
-
-   npx serve .
-   \`\`\`
 
 ## 📱 Responsive Breakpoints
 
@@ -123,37 +104,6 @@ The application uses the JSONPlaceholder API:
 - **Endpoint**: `https://jsonplaceholder.typicode.com/todos`
 - **Method**: GET
 - **Response**: Array of todo objects with id, title, completed, and userId fields
-
-### Data Structure
-
-\`\`\`javascript
-{
-"userId": 1,
-"id": 1,
-"title": "delectus aut autem",
-"completed": false
-}
-\`\`\`
-
-## 🎨 Customization
-
-### Colors
-
-Modify CSS custom properties in `styles.css`:
-\`\`\`css
-:root {
---primary-color: #2563eb;
---secondary-color: #0891b2;
-/_ ... other colors _/
-}
-\`\`\`
-
-### Pagination
-
-Change default items per page in `script.js`:
-\`\`\`javascript
-let itemsPerPage = 10; // Change this value
-\`\`\`
 
 ## 🚀 Performance Optimizations
 
