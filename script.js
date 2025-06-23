@@ -1,9 +1,10 @@
-// Import jQuery
-const $ = require("jquery");
-
 $(document).ready(() => {
   // Application state
   let allTodos = [];
+  let filteredTodos = [];
+  let currentPage = 1;
+  let itemsPerPage = 10;
+  const currentSort = { column: "id", direction: "asc" };
 
   // Initialize the application
   init();
@@ -346,5 +347,29 @@ $(document).ready(() => {
       $("#loadingSpinner").hide();
       $(".table-container").show();
     }
+  }
+
+  // Show error message
+  function showError(message) {
+    const errorHtml = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+    $(".main-container").prepend(errorHtml);
+  }
+
+  // Debounce function for search input
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
   }
 });

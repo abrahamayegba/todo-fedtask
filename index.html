@@ -110,12 +110,37 @@
                   </th>
                 </tr>
               </thead>
-              <tbody id="todoTableBody"></tbody>
+              <tbody id="todoTableBody">
+                <!-- Table rows will be dynamically added here -->
+              </tbody>
             </table>
           </div>
         </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+          <div class="pagination-info">
+            <span id="paginationInfo">Showing 0 - 0 of 0 entries</span>
+          </div>
+          <nav aria-label="Todo pagination">
+            <ul class="pagination mb-0" id="paginationControls">
+              <!-- Pagination buttons will be generated here -->
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
+
+    <!-- GitHub Repository Link -->
+    <a
+      href="https://github.com/yourusername/todo-app"
+      class="github-link"
+      target="_blank"
+      title="View on GitHub"
+    >
+      <i class="fab fa-github fa-lg"></i>
+    </a>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
